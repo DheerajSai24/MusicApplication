@@ -8,9 +8,9 @@ let currentFolder = "";
 // Folder cover images for different genre folders
 const folderCovers = {
     "love hits": "https://i.scdn.co/image/ab67616d00001e02497b38a2a59095193de438d1",
-    "telugu hits": "https://i.scdn.co/image/ab67616d00001e0283141000ee8ce3b893a0b425",
+    "telugu songs": "https://i.scdn.co/image/ab67616d00001e0283141000ee8ce3b893a0b425",
     "hindi hits": "https://i.scdn.co/image/ab67616d00001e020c877acde30dad1997723dba",
-    "default": "https://i.scdn.co/image/ab67616d00001e0285c5968be0d0d9c545241124"
+    "english songs": "https://i.scdn.co/image/ab67616d00001e02bf94e27360d7005b236f9988"
 };
 
 function formatTime(seconds) {
@@ -30,63 +30,100 @@ function normalizeClassName(folder) {
 
 // Get all folders from the songs directory
 async function getFolders() {
-    try {
-        let a = await fetch(`http://127.0.0.1:3000/songs`);
-        let response = await a.text();
-        let div = document.createElement("div");
-        div.innerHTML = response;
-        let anchors = div.getElementsByTagName("a");
-        let folders = [];
-        
-        for (let index = 0; index < anchors.length; index++) {
-            const element = anchors[index];
-            if (element.href.endsWith("/") && !element.href.endsWith("songs/")) {
-                // Extract folder name from the URL
-                let folderName = element.href.split("/").slice(-2)[0];
-                folders.push(folderName);
-            }
-        }
-        return folders;
-    } catch (error) {
-        console.error("Error fetching folders:", error);
-        return [];
-    }
-}
+    // Return the known folders directly
+    return [
+        "love hits",
+        "hindi hits",
+        "telugu songs",
+        "english songs"
+    ];
+} 
 
-// Get songs from a specific folder
 async function getSongs(folder) {
+    currentFolder = folder;
     try {
-        currentFolder = folder;
-        let a = await fetch(`http://127.0.0.1:3000/songs/${folder}`);
-        let response = await a.text();
-        let div = document.createElement("div");
-        div.innerHTML = response;
-        let as = div.getElementsByTagName("a");
-        let songsList = [];
+        // Using Spotify Web API with client credentials
+        const CLIENT_ID = 'c785906446bd48e3978fbb26db3c6430';
+        const CLIENT_SECRET = '7e4c5479f1734790956c3b7dcbf21648';
+
+        // Get access token
+        const authResponse = await fetch('https://accounts.spotify.com/api/token', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Basic ' + btoa(CLIENT_ID + ':' + CLIENT_SECRET)
+            },
+            body: 'grant_type=client_credentials'
+        });
         
-        for (let index = 0; index < as.length; index++) {
-            const element = as[index];
-            if (element.href.endsWith(".mp3")) {
-                songsList.push(decodeURI(element.href.split(`/${folder}/`)[1]));
-            }
+        const authData = await authResponse.json();
+        
+        let query = '';
+        switch(folder.toLowerCase()) {
+            case 'love hits':
+                query = 'romantic bollywood';
+                break;
+            case 'hindi hits':
+                query = 'trending hindi';
+                break;
+            case 'telugu songs':
+                query = 'telugu hits';
+                break;
+            case 'english songs':
+                query = 'english pop hits';
+                break;
         }
-        return songsList;
+
+        // Search for tracks
+        const searchResponse = await fetch(
+            `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=track&limit=10`,
+            {
+                headers: {
+                    'Authorization': 'Bearer ' + authData.access_token
+                }
+            }
+        );
+        
+        const searchData = await searchResponse.json();
+        console.log('API Response:', searchData); // Debug log
+
+        if (searchData.tracks && searchData.tracks.items) {
+            return searchData.tracks.items.map(track => ({
+                name: track.name,
+                artist: track.artists[0].name,
+                duration: Math.floor(track.duration_ms / 1000),
+                preview_url: track.preview_url,
+                image: track.album.images[0].url
+            }));
+        } else {
+            console.error('No tracks found in response:', searchData);
+            throw new Error('No tracks found in API response');
+        }
     } catch (error) {
         console.error("Error fetching songs:", error);
-        return [];
+        // Return some sample data as fallback
+        return [
+            {
+                name: "Connection Error",
+                artist: "Please check your internet connection",
+                duration: 0,
+                preview_url: null,
+                image: folderCovers[folder.toLowerCase()]
+            }
+        ];
     }
 }
+}
 
-// Display folders in the Albums section
+
 function displayFolders(folders) {
     let albumsContainer = document.querySelector(".albumsContainer");
     albumsContainer.innerHTML = "";
     
     folders.forEach(folder => {
-        // Get cover image for folder or use default
-        const coverImg = folderCovers[folder.toLowerCase()] || folderCovers["default"];
+        const coverImg = folderCovers[folder.toLowerCase()];
         
-        // Create album card for each folder
+        
         const albumCard = document.createElement("div");
         albumCard.classList.add("albumCard");
         albumCard.dataset.folder = folder;
@@ -97,7 +134,7 @@ function displayFolders(folders) {
             <div class="songCount">Folder</div>
         `;
         
-        // Add click event to load songs from this folder
+        
         albumCard.addEventListener("click", () => {
             loadFolderSongs(folder);
         });
@@ -106,9 +143,9 @@ function displayFolders(folders) {
     });
 }
 
-// Load songs from selected folder and display them
+
 async function loadFolderSongs(folder) {
-    // Update the UI to highlight the selected folder
+    
     document.querySelectorAll(".albumCard").forEach(card => {
         if (card.dataset.folder === folder) {
             card.style.backgroundColor = "#2a2a2a";
@@ -116,69 +153,74 @@ async function loadFolderSongs(folder) {
             card.style.backgroundColor = "transparent";
         }
     });
-    
-    // Load songs from the selected folder
+     
     songs = await getSongs(folder);
-    
-    // Update the song list in the left panel
+     
     let songUL = document.querySelector(".songList").getElementsByTagName("ul")[0];
     songUL.innerHTML = "";
     
     songs.forEach((song, index) => {
-        const songName = song.replace(".mp3", "");
-        
         songUL.innerHTML += `<li>
             <i class="fa-solid fa-music"></i>
             <div class="info">
-                <div class="songname">${songName}</div>
-                <div class="artist">From: ${folder}</div>
+                <div class="songname">${song.name}</div>
+                <div class="artist">${song.artist}</div>
+                <div class="album-info">Category: ${currentFolder}</div>
             </div>
             <div class="playnow">
-                <i class="fa-solid fa-circle-play"></i>
+                <span class="duration">${formatTime(song.duration)}</span>
+                <i class="fa-solid ${song.preview_url ? 'fa-circle-play' : 'fa-circle-minus'}" 
+                   title="${song.preview_url ? 'Play preview' : 'No preview available'}"></i>
             </div>
         </li>`;
     });
     
-    // Add click event listeners to the songs in the list
+    
     Array.from(document.querySelector(".songList").getElementsByTagName("li")).forEach((e, index) => {
         e.addEventListener("click", () => {
             playMusic(songs[index], index);
         });
     });
     
-    // If there are songs in the folder, set the first one as current
+    
     if (songs.length > 0) { 
-        currentSong.src = `/songs/${folder}/${songs[0]}`;
-        document.getElementById("songname").innerHTML = songs[0].replace(".mp3", "");
+        currentSong.src = songs[0].preview_url;
+        document.getElementById("songname").innerHTML = `${songs[0].name} - ${songs[0].artist}`;
         document.getElementById("songtime").innerHTML = "00:00/00:00";
     }
 }
 
-// Play a specific song
+
 const playMusic = (track, index) => {
-    currentSong.src = `/songs/${currentFolder}/${track}`;
+    if (!track.preview_url) {
+        alert("No preview available for this song");
+        return;
+    }
+
+    currentSong.src = track.preview_url;
+    currentIndex = index;
+    
     currentSong.play()
         .then(() => {
-            // Update UI elements once song starts playing
-            currentIndex = index;
-            document.getElementById("songname").innerHTML = track.replace(".mp3", "");
+            document.getElementById("songname").innerHTML = `${track.name} - ${track.artist}`;
             document.getElementById("play").setAttribute("class", "fa-solid fa-circle-pause");
-            
-            // Highlight the currently playing song in the list
             highlightCurrentSong();
         })
         .catch(error => {
             console.error("Error playing song:", error);
+            alert("Unable to play this song. Please try another.");
         });
 }
 
-// Play next song
+
+
+
 const playNext = () => {
     currentIndex = (currentIndex + 1) % songs.length;
     playMusic(songs[currentIndex], currentIndex);
 }
 
-// Play previous song
+
 const playPrevious = () => {
     currentIndex = (currentIndex - 1 + songs.length) % songs.length;
     playMusic(songs[currentIndex], currentIndex);
@@ -200,6 +242,8 @@ function setupSeekbar() {
     const circle = document.querySelector(".circle");
     
     seekbar.addEventListener("click", function(e) {
+        if (!currentSong.src) return;
+        
         const rect = this.getBoundingClientRect();
         const clickPosition = e.clientX - rect.left;
         const seekbarWidth = rect.width;
@@ -222,17 +266,15 @@ function setupSeekbar() {
     });
 }
 
-async function main() { 
-    // Load and display all folders
+async function main() {  
     const folders = await getFolders();
     displayFolders(folders);
     
-    // If folders exist, load songs from the first folder by default
+     
     if (folders.length > 0) {
         loadFolderSongs(folders[0]);
     }
-    
-    // Set up event listener for timeupdate
+     
     currentSong.addEventListener("timeupdate", () => {
         document.getElementById("songtime").innerHTML = `${formatTime(currentSong.currentTime)}/${formatTime(currentSong.duration)}`;
         
@@ -241,12 +283,13 @@ async function main() {
         }
     });
     
-    // Play next song when current ends
+    
+
     currentSong.addEventListener("ended", () => {
         playNext();
     });
     
-    // Play/pause button functionality
+    
     document.getElementById("play").addEventListener("click", () => {
         if (currentSong.paused) {
             if (currentSong.src) {
@@ -261,11 +304,11 @@ async function main() {
         }
     });
     
-    // Next/previous button handlers
+    
     document.getElementById("next").addEventListener("click", playNext);
     document.getElementById("previous").addEventListener("click", playPrevious);
     
-    // Mobile menu handlers
+    
     document.querySelector(".hamburger").addEventListener("click", () => {
         document.querySelector(".left").style.left = "0%";
     });
