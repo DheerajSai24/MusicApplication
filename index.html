@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>My Music</title>
+    <link rel="stylesheet" href="c.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="top">
+
+            <div class="hamburger"><i id="hamburger" class="fa-solid fa-bars"></i></div>
+            <div class="logo"><i class="fa-brands fa-spotify" style="color: #ffffff;"></i></div>
+            <div class="home"><i class="fa-solid fa-house" style="color: #ffffff;"></i></div>
+            <div class="searchbar">
+                <div class="searchIcon">
+                    <i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i>
+                </div>
+                <div class="searchArea">
+                    <input type="search" name="search" id="search" placeholder="What do you want to play ?">
+                </div>
+                <div class="browseIcon">
+                    <i class="fa-regular fa-window-restore" style="color: #ffffff;"></i>
+                </div>
+            </div>
+
+            <div class="topright">
+                <div class="spans">
+                    <span class="premium">Premium</span>
+                    <span class="support">Support</span>
+                    <span class="download">Download</span>
+                </div>
+                <span class="install">Install App</span>
+
+                <button class="signinBtn btns">Sign up</button>
+                <button class="loginBtn btns">Login in</button>
+            </div>
+        </div>
+        <div class="mainbody">
+            <div class="left">
+                <div class="library">
+                    <h4>Your Library</h4>
+                    <div class="libraryicons">
+                        <i id="close" style="margin-right: 5px;" class="fa-solid fa-xmark"></i>
+                        <i class="fa-solid fa-plus"></i>
+                    </div>
+                </div>
+
+                <div class="songList">
+                    <h4>Songs</h4>
+                    <ul>
+                        <!-- Songs will be loaded here dynamically -->
+                    </ul>
+                </div>
+                <div class="liscens">
+                    <ul>
+                        <li>Legal</li>
+                        <li>Privacy Policy</li>
+                        <li>Terms and conditions</li>
+                        <li>Cookies</li>
+                        <li>About us</li>
+                        <li>Contact us</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="right">
+                <div class="rightHeading">
+                    <h2>Trending Songs</h2>
+                    <p>Show all</p>
+                </div>
+                <div class="cardContainer">
+
+                    <div class="card">
+                        <img aria-hidden="false" draggable="false" loading="lazy"
+                            src="https://i.scdn.co/image/ab67616d00001e0283141000ee8ce3b893a0b425" alt="Finding Her"
+                            class="mMx2LUixlnN_Fu45JpFB CmkY1Ag0tJDfnFXbGgju _EShSNaBK1wUIaZQFJJQ Yn2Ei5QZn19gria6LjZj"
+                            srcset="https://i.scdn.co/image/ab67616d00001e0283141000ee8ce3b893a0b425 150w, https://i.scdn.co/image/ab67616d00001e0283141000ee8ce3b893a0b425 300w, https://i.scdn.co/image/ab67616d0000b27383141000ee8ce3b893a0b425 320w, https://i.scdn.co/image/ab67616d0000b27383141000ee8ce3b893a0b425 640w"
+                            sizes="(min-width: 1280px) 232px, 192px">
+                        <div class="title">Finding Her</div>
+                        <div class="singer">Arijit Singh</div>
+                    </div>
+                    <div class="card">
+                        <img aria-hidden="false" draggable="false" loading="lazy"
+                            src="https://i.scdn.co/image/ab67616d00001e020c877acde30dad1997723dba"
+                            alt="Mere Ghar Ram Aaye Hain"
+                            class="mMx2LUixlnN_Fu45JpFB CmkY1Ag0tJDfnFXbGgju _EShSNaBK1wUIaZQFJJQ Yn2Ei5QZn19gria6LjZj"
+                            srcset="https://i.scdn.co/image/ab67616d00001e020c877acde30dad1997723dba 150w, https://i.scdn.co/image/ab67616d00001e020c877acde30dad1997723dba 300w, https://i.scdn.co/image/ab67616d0000b2730c877acde30dad1997723dba 320w, https://i.scdn.co/image/ab67616d0000b2730c877acde30dad1997723dba 640w"
+                            sizes="(min-width: 1280px) 232px, 192px">
+                        <div class="title">Mera Ghar Ram</div>
+                        <div class="singer">Arijit Singh</div>
+                    </div>
+                    <div class="card">
+                        <img aria-hidden="false" draggable="false" loading="lazy"
+                            src="https://i.scdn.co/image/ab67616d00001e02497b38a2a59095193de438d1"
+                            alt="Ram Siya Ram (From &quot;Adipurush&quot;)"
+                            class="mMx2LUixlnN_Fu45JpFB CmkY1Ag0tJDfnFXbGgju _EShSNaBK1wUIaZQFJJQ Yn2Ei5QZn19gria6LjZj"
+                            srcset="https://i.scdn.co/image/ab67616d00001e02497b38a2a59095193de438d1 150w, https://i.scdn.co/image/ab67616d00001e02497b38a2a59095193de438d1 300w, https://i.scdn.co/image/ab67616d0000b273497b38a2a59095193de438d1 320w, https://i.scdn.co/image/ab67616d0000b273497b38a2a59095193de438d1 640w"
+                            sizes="(min-width: 1280px) 232px, 192px">
+                        <div class="title">Siya Ram</div>
+                        <div class="singer">Arijit Singh</div>
+                    </div>
+                    <div class="card">
+                        <img aria-hidden="false" draggable="false" loading="lazy"
+                            src="https://i.scdn.co/image/ab67616d00001e024c81f86297c2e3fac6a4c6cd"
+                            alt="2 Khatole (Lofi Mix)"
+                            class="mMx2LUixlnN_Fu45JpFB CmkY1Ag0tJDfnFXbGgju _EShSNaBK1wUIaZQFJJQ Yn2Ei5QZn19gria6LjZj"
+                            srcset="https://i.scdn.co/image/ab67616d00001e024c81f86297c2e3fac6a4c6cd 150w, https://i.scdn.co/image/ab67616d00001e024c81f86297c2e3fac6a4c6cd 300w, https://i.scdn.co/image/ab67616d0000b2734c81f86297c2e3fac6a4c6cd 320w, https://i.scdn.co/image/ab67616d0000b2734c81f86297c2e3fac6a4c6cd 640w"
+                            sizes="(min-width: 1280px) 232px, 192px">
+                        <div class="title">Khatole</div>
+                        <div class="singer">Arijit Singh</div>
+                    </div>
+                    <div class="card">
+                        <img aria-hidden="false" draggable="false" loading="lazy"
+                            src="https://i.scdn.co/image/ab67616d00001e0285c5968be0d0d9c545241124" alt="Pal Pal"
+                            class="mMx2LUixlnN_Fu45JpFB CmkY1Ag0tJDfnFXbGgju _EShSNaBK1wUIaZQFJJQ Yn2Ei5QZn19gria6LjZj"
+                            srcset="https://i.scdn.co/image/ab67616d00001e0285c5968be0d0d9c545241124 150w, https://i.scdn.co/image/ab67616d00001e0285c5968be0d0d9c545241124 300w, https://i.scdn.co/image/ab67616d0000b27385c5968be0d0d9c545241124 320w, https://i.scdn.co/image/ab67616d0000b27385c5968be0d0d9c545241124 640w"
+                            sizes="(min-width: 1280px) 232px, 192px">
+                        <div class="title">Pal Pal</div>
+                        <div class="singer">Arijit Singh</div>
+                    </div>
+                    <div class="card">
+                        <img aria-hidden="false" draggable="false" loading="lazy"
+                            src="https://i.scdn.co/image/ab67616d00001e0283141000ee8ce3b893a0b425" alt="Finding Her"
+                            class="mMx2LUixlnN_Fu45JpFB CmkY1Ag0tJDfnFXbGgju _EShSNaBK1wUIaZQFJJQ Yn2Ei5QZn19gria6LjZj"
+                            srcset="https://i.scdn.co/image/ab67616d00001e0283141000ee8ce3b893a0b425 150w, https://i.scdn.co/image/ab67616d00001e0283141000ee8ce3b893a0b425 300w, https://i.scdn.co/image/ab67616d0000b27383141000ee8ce3b893a0b425 320w, https://i.scdn.co/image/ab67616d0000b27383141000ee8ce3b893a0b425 640w"
+                            sizes="(min-width: 1280px) 232px, 192px">
+                        <div class="title">Finding Her</div>
+                        <div class="singer">Arijit Singh</div>
+                    </div>
+
+
+                </div>
+                <div class="artistHeading">
+                    <h2>Popular Artist</h2>
+                    <p>Show all</p>
+                </div>
+                <div class="artistContainer">
+                    <div class="artCard">
+                        <img src="https://th.bing.com/th/id/OIP.YW-AZTE5SDP9YPdzKTFqBwHaHa?w=250&h=250&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"
+                            alt="">
+                        <p class="name">Pritam</p>
+                        <p class="artist">Aritst</p>
+                    </div>
+                    <div class="artCard">
+                        <img src="https://th.bing.com/th/id/OIP.dSJHZROzFzLzf9LN5g8JEQAAAA?w=234&h=197&c=7&r=0&o=5&dpr=1.3&pid=1.7"
+                            alt="">
+                        <p class="name">Arijit Singh</p>
+                        <p class="artist">Aritst</p>
+                    </div>
+                    <div class="artCard">
+                        <img src="https://th.bing.com/th/id/OIP.T17opNzoO6MZbHa0-C-z2gHaE8?w=274&h=183&c=7&r=0&o=5&dpr=1.3&pid=1.7"
+                            alt="">
+                        <p class="name">A.R.Rehman</p>
+                        <p class="artist">Aritst</p>
+                    </div>
+                    <div class="artCard">
+                        <img src="https://th.bing.com/th/id/OIP.v7Uu2SJhigy7yvoPPWF5yQHaJi?w=135&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7"
+                            alt="">
+                        <p class="name">Shreya Goshal</p>
+                        <p class="artist">Aritst</p>
+                    </div>
+                    <div class="artCard">
+                        <img src="https://th.bing.com/th/id/OIP.DEHBUiu7NyjNbC3N1I-dYgHaFj?w=243&h=182&c=7&r=0&o=5&dpr=1.3&pid=1.7"
+                            alt="">
+                        <p class="name">Anirudh</p>
+                        <p class="artist">Aritst</p>
+                    </div>
+                    <div class="artCard">
+                        <img src="https://th.bing.com/th/id/OIP.66Bx-vE4rIhWFiFApwNFXQHaHa?w=177&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7"
+                            alt="">
+                        <p class="name">Sachet Tondon</p>
+                        <p class="artist">Aritst</p>
+                    </div>
+                </div>
+
+                <!-- Added Albums/Folders Section below Artists -->
+                <div class="albumsHeading">
+                    <h2>Albums</h2>
+                    <p>Show all</p>
+                </div>
+                <div class="albumsContainer">
+                    <!-- Album folders will be dynamically loaded here -->
+                </div>
+
+                <div class="playbar">
+                    <div class="seekbar">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="abovebar">
+                        <div id="songname"></div>
+                        <div class="songButtons">
+                            <i id="previous" class="fa-solid fa-backward-step"></i>
+                            <i id="play" class="fa-solid fa-circle-play"></i>
+                            <!-- <i class="fa-solid fa-circle-pause"></i> -->
+                            <i id="next" class="fa-solid fa-forward-step"></i>
+                        </div>
+                        <div id="songtime"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="c.js"></script>
+</body>
+
+</html>
