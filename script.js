@@ -113,7 +113,7 @@ async function getSongs(folder) {
         ];
     }
 }
-}
+
 
 
 function displayFolders(folders) {
